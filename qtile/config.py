@@ -1,100 +1,165 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 
+# CUSTOM CONFIGURATION FROM:
+#  - Roberto Carrichi.
+##############################
+
+import os, subprocess
 from typing import List  # noqa: F401
-
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+# PERSONALIZADOS!
+# from settings.keys import mod, keys 
+# from settings.groups import groups
+# from settings.layouts import layouts, floating_layout
+# from settings.widgets import widget_defaults, extension_defaults
+# from settings.screens import screens
+# from settings.mouse import mouse
+# from settings.path import qtile_path
+
 mod = "mod4"
 terminal = guess_terminal()
 
-keys = [
+keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Switch between windows
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(),
-        desc="Move window focus to other window"),
+    # Cambiar a ventana activa de la izquierda.
+    ([mod], "h", lazy.layout.left()),
+    # Cambiar a la ventana activa de la derecha.
+    ([mod], "l", lazy.layout.right()),
+    # Cambiar ventana activa de abajo.
+    ([mod], "j", lazy.layout.down()),
+    # Cambiar ventana activa de arriba.
+    ([mod], "k", lazy.layout.up()),
+    # Cambiar  de ventana sin direccion.
+    ([mod], "space", lazy.layout.next()),
 
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(),
-        desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(),
-        desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(),
-        desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    # Mover ventana activa a la izquierda.
+    ([mod, "shift"], "h", lazy.layout.shuffle_left()),
+    # Mover ventana a la derecha.
+    ([mod, "shift"], "l", lazy.layout.shuffle_right()),
+    # Mover ventana abajo.
+    ([mod, "shift"], "j", lazy.layout.shuffle_down()),
+    # Mover ventana arriba.
+    ([mod, "shift"], "k", lazy.layout.shuffle_up()),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(),
-        desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(),
-        desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(),
-        desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    # Agrandar la ventana activa hacia la izquierda.
+    ([mod, "control"], "h", lazy.layout.grow_left()),
+    # Agrandar la ventana activa hacia la derecha.
+    ([mod, "control"], "l", lazy.layout.grow_right()),
+    # Agrandar la ventana activa hacia abajo.
+    ([mod, "control"], "j", lazy.layout.grow_down()),
+    # Agrandar la ventana activa hacia arriba.
+    ([mod, "control"], "k", lazy.layout.grow_up()),
+    # Colocar TODAS las ventanas a tu tamanio original.
+    ([mod], "n", lazy.layout.normalize()),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack"),
-    Key([mod], "Return", lazy.spawn("alacritty")),
-
+    # Intercambiar si "bloquear" la ventana para que pueda divirse o si no.
+    # Si un pedazo de la ventana esta bloqueda solo se generaran nuevas pestanias.
+    #     , desc="Toggle between split and unsplit sides of stack"),
+    ([mod, "shift"], "Return", lazy.layout.toggle_split()),
+    
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    # Intercambiar entre los diferentes tipos de plantillas "Maximizada", "Por columnas", etc.
+    ([mod], "Tab", lazy.next_layout()),
+    # Matar una ventana.
+    ([mod], "q", lazy.window.kill()),
 
-    Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
-    # Mis comandos
-    Key([mod], "j", lazy.spawn("rofi -show")),
-]
+    # Reiniciar Qtile.
+    ([mod, "control"], "r", lazy.restart()),
 
-groups = [Group(i) for i in "123456789"]
+    # Apagar Qtile. "Cerrar sesion"
+    ([mod, "control"], "q", lazy.shutdown()),
+
+    # Comando para ejecutar un unico comando.
+    ([mod], "r", lazy.spawncmd()),
+    
+    # Cambiar de monitores
+    ([mod], "period", lazy.prev_screen()),
+
+    #################################
+    # COMANDOS SOBRE APLICACIONES   #
+    #################################
+
+    # Comando para crear una nueva consola.
+    ([mod], "Return", lazy.spawn("alacritty")),
+
+    # Mostrar menu de aplicaciones TODAS LAS APLICACIONES
+    ([mod], "m", lazy.spawn("rofi -show drun")),
+
+    # Mostrar las aplicaciones activas.
+    ([mod, "shift"], "m", lazy.spawn("rofi -show")),
+    
+    # Abrir navegador.
+    ([mod], "u", lazy.spawn("brave")),
+
+    # Abrir explorador de archivos.
+    ([mod], "y", lazy.spawn("thunar")),
+
+    # Abrir explorador de archivos por consola.
+    ([mod, "shift"], "y", lazy.spawn("ranger")),
+
+    # Screenshot
+    #([mod], "s", lazy.spawn("scrot")),
+    #([mod, "shift"], "s", lazy.spawn("scrot -s")),
+
+    #####################################
+    # COMANDOS SOBRE EL HARDWARE
+    ####################################
+
+    # Configuracion de volumen
+    ([mod, "control"], "s", lazy.spawn("pavucontrol")),
+    # Volume
+    ([mod, "shift"], "o", lazy.spawn(
+        "pamixer --decrease 5"
+    )),
+    ([mod, "shift"], "i", lazy.spawn(
+        "pamixer --decrease 5"
+    )),
+    ([mod, "control"], "p", lazy.spawn(
+        "pamixer --toggle-mute"
+    )),
+
+    # Brightness
+    ([mod], "o", lazy.spawn("brightnessctl set +10%")),
+    ([mod], "i", lazy.spawn("brightnessctl set 10%-")),
+
+    # Distribuciones de teclado
+    ([mod], "p", lazy.widget["keyboardlayout"].next_keyboard()),
+]]
+
+__groups = {
+    # 1:Group("TERM", matches=[Match(wm_class=["alacritty"])]),
+    1:Group("TERM"),
+    # 2:Group("WWW", matches=[Match(wm_class=["Brave"])]),
+    2:Group("WWW"),
+    3:Group("FILES", matches=[Match(wm_class=["thunar"])]),
+}
+groups = [__groups[num] for num in __groups]
+
+def get_group_key(name):
+    return [k for k, g in __groups.items() if g.name == name][0]
 
 for i in groups:
     keys.extend([
-        # mod1 + letter of group = switch to group
-        Key([mod], i.name, lazy.group[i.name].toscreen(),
-            desc="Switch to group {}".format(i.name)),
+        # Cambiar de espacio de trabajo con los numeros.
+        # mod + numero = Cambiar a el grupo indicado.
+        Key([mod], str(get_group_key(i.name)), lazy.group[i.name].toscreen()),
 
-        # mod1 + shift + letter of group = switch to & move focused window to group
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
-            desc="Switch to & move focused window to group {}".format(i.name)),
+        # Enviar ventana hacia un worksace en especifico.
+        # mod + shift + numero = mover la ventana activa a un grupo definido.
+        # Key([mod], "shift"], actual_key, lazy.window.togroup(group.name, switch_group=True)),
+        Key([mod, "shift"], str(get_group_key(i.name)), lazy.window.togroup(i.name)),
+
         # Or, use below if you prefer not to switch to that group.
         # # mod1 + shift + letter of group = move focused window to group
         # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
@@ -102,7 +167,11 @@ for i in groups:
     ])
 
 layouts = [
-    layout.Columns(border_focus_stack='#d75f5f'),
+    layout.Columns(
+        border_focus='#A7D0CD',
+        border_width=3,
+        margin=6,
+    ),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -119,30 +188,52 @@ layouts = [
 
 widget_defaults = dict(
     font='sans',
-    fontsize=12,
+    fontsize=14,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
-                widget.CurrentLayout(),
+                # widget.CurrentLayout(),
                 widget.GroupBox(),
                 widget.Prompt(),
-                widget.WindowName(),
+                widget.WindowName(foreground="#7C83FD"),
                 widget.Chord(
                     chords_colors={
-                        'launch': ("#ff0000", "#ffffff"),
+                        'launch': ("#A7D0CD", "#ffffff"),
                     },
-                    name_transform=lambda name: name.upper(),
+                    name_transform = lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                widget.Systray(),
-                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-                widget.QuickExit(),
+                # widget.TextBox("Meethelight", name="default"),
+                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                # widget.Systray(),
+                # widget.KeyboardLayout(configured_keyboards=['us']),
+                widget.Clock(format='%B %d, %Y %H:%M'),
+            ],
+            24,
+        ),
+    ),
+    Screen(
+        top=bar.Bar(
+            [
+                # widget.CurrentLayout(),
+                widget.GroupBox(),
+                widget.Prompt(),
+                widget.WindowName(foreground="#7C83FD"),
+                widget.Chord(
+                    chords_colors={
+                        'launch': ("#A7D0CD", "#ffffff"),
+                    },
+                    name_transform = lambda name: name.upper(),
+                ),
+                # widget.TextBox("Meethelight", name="default"),
+                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                # widget.Systray(),
+                # widget.KeyboardLayout(configured_keyboards=['us']),
+                widget.Clock(format="%B %d, %Y %H:%M"),
             ],
             24,
         ),
@@ -163,6 +254,7 @@ dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
 bring_front_click = False
+# Que es esto de cursor_warp?
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
     # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -176,6 +268,20 @@ floating_layout = layout.Floating(float_rules=[
 ])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
+# focus_on_window_activation = "urgent"
+
+# COMANDOS QUE QUIERO QUE SE EJECUTEN AL MOMENTO DE INICIAR LA COMPUTADORA
+############################################################################
+
+autostart = [
+    # Carcar el fondo de pantalla.
+    "feh --bg-fill $HOME/wallpaper.jpg",
+    # Aplicar transparencia.
+    "picom &",
+]
+
+for command in autostart:
+    os.system(command)
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
