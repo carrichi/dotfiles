@@ -19,7 +19,9 @@ from libqtile.utils import guess_terminal
 # from settings.mouse import mouse
 # from settings.path import qtile_path
 
-mod = "mod4"
+mod = "mod4" # SUPER (TECLA WINDOWS)
+mod1 = "mod1" # ALT
+
 terminal = guess_terminal()
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
@@ -59,18 +61,14 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Colocar TODAS las ventanas a tu tamanio original.
     ([mod], "n", lazy.layout.normalize()),
 
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed
-    # Unsplit = 1 window displayed, like Max layout, but still with
-    # multiple stack panes
     # Intercambiar si "bloquear" la ventana para que pueda divirse o si no.
     # Si un pedazo de la ventana esta bloqueda solo se generaran nuevas pestanias.
     #     , desc="Toggle between split and unsplit sides of stack"),
     ([mod, "shift"], "Return", lazy.layout.toggle_split()),
     
-    # Toggle between different layouts as defined below
     # Intercambiar entre los diferentes tipos de plantillas "Maximizada", "Por columnas", etc.
     ([mod], "Tab", lazy.next_layout()),
+
     # Matar una ventana.
     ([mod], "q", lazy.window.kill()),
 
@@ -94,7 +92,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "Return", lazy.spawn("alacritty")),
 
     # Mostrar menu de aplicaciones TODAS LAS APLICACIONES
-    ([mod], "m", lazy.spawn("rofi -show drun")),
+    ([mod], "m", lazy.spawn("rofi -show drun -show-icons")),
 
     # Mostrar las aplicaciones activas.
     ([mod, "shift"], "m", lazy.spawn("rofi -show")),
@@ -120,13 +118,13 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod, "control"], "s", lazy.spawn("pavucontrol")),
     # Volume
     ([mod, "shift"], "o", lazy.spawn(
-        "pamixer --decrease 5"
+        "amixer --decrease 5"
     )),
     ([mod, "shift"], "i", lazy.spawn(
-        "pamixer --decrease 5"
+        "amixer --decrease 5"
     )),
     ([mod, "control"], "p", lazy.spawn(
-        "pamixer --toggle-mute"
+        "amixer --toggle-mute"
     )),
 
     # Brightness
@@ -134,15 +132,15 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "i", lazy.spawn("brightnessctl set 10%-")),
 
     # Distribuciones de teclado
-    ([mod], "p", lazy.widget["keyboardlayout"].next_keyboard()),
+    ([mod1], "space", lazy.widget["keyboardlayout"].next_keyboard()),
 ]]
 
 __groups = {
-    # 1:Group("TERM", matches=[Match(wm_class=["alacritty"])]),
-    1:Group("TERM"),
-    # 2:Group("WWW", matches=[Match(wm_class=["Brave"])]),
-    2:Group("WWW"),
-    3:Group("FILES", matches=[Match(wm_class=["thunar"])]),
+    1:Group(""),
+    2:Group("", matches=[Match(wm_class=["Brave-browser"])], layouts=[layout.Max()]),
+    # 2:Group(""),
+    3:Group("", matches=[Match(wm_class=["thunar"])]),
+    # 
 }
 groups = [__groups[num] for num in __groups]
 
@@ -157,13 +155,7 @@ for i in groups:
 
         # Enviar ventana hacia un worksace en especifico.
         # mod + shift + numero = mover la ventana activa a un grupo definido.
-        # Key([mod], "shift"], actual_key, lazy.window.togroup(group.name, switch_group=True)),
         Key([mod, "shift"], str(get_group_key(i.name)), lazy.window.togroup(i.name)),
-
-        # Or, use below if you prefer not to switch to that group.
-        # # mod1 + shift + letter of group = move focused window to group
-        # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-        #     desc="move focused window to group {}".format(i.name)),
     ])
 
 layouts = [
@@ -173,6 +165,7 @@ layouts = [
         margin=6,
     ),
     layout.Max(),
+    
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -197,45 +190,249 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                # widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(foreground="#7C83FD"),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ("#A7D0CD", "#ffffff"),
-                    },
-                    name_transform = lambda name: name.upper(),
+                widget.TextBox(
+                    text="",
+                    fontsize=40,
+                    foreground="#DDDDDD",
+                    background="#0F044C",
                 ),
-                # widget.TextBox("Meethelight", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # widget.Systray(),
-                # widget.KeyboardLayout(configured_keyboards=['us']),
-                widget.Clock(format='%B %d, %Y %H:%M'),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=38,
+                    padding=-8,
+                    foreground="#0F044C",
+                    background="#AD6989",
+                ),
+                widget.GroupBox(
+                    fontsize=24,
+                    active="#DBC6EB",
+                    inactive="#30475E",
+                    borderwidth=0,
+                    background="#AD6989",
+                    padding=5,
+                    this_current_screen_border="#562349",
+                    other_screen_border="#FFE9C5",
+                ),
+                widget.Prompt(
+                    fontsize=15,
+                    prompt=" Ejecutar: ",
+                    background="#AD6989",
+                    foreground="#DDDDDD",
+                ),
+                widget.TextBox(
+                    text="  ",
+                    fontsize=38,
+                    padding=-8,
+                    foreground="#AD6989",
+                ),
+                widget.WindowName(fontsize=12.8, foreground="#DDDDDD"),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    foreground="#A685E2",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=42,
+                    background="#A685E2",
+                    foreground="#30475E",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    background="#A685E2",
+                ),
+                widget.KeyboardLayout(
+                    configured_keyboards=['us', 'latam'],
+                    background="#A685E2",
+                    foreground="#30475E",
+                ),
+               widget.TextBox(
+                    text=" ",
+                    background="#A685E2",
+                ),
+               widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#A685E2",
+                    foreground="#F5F7B2",
+                ),
+                widget.Battery(
+                    full_char=" ",
+                    empty_char=" ",
+                    charge_char=" ",     
+                    discharge_char=" ",
+                    unknown_char=" ",
+                    low_foreground="#D83A56",
+                    format='{char} {percent:2.0%}',
+                    background="#F5F7B2",
+                    foreground="#1B1717",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#F5F7B2",
+                    foreground="#A6D6D6",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=28,
+                    background="#A6D6D6",
+                    foreground="#30475E",
+                ),
+                widget.Clock(
+                    fmt="{}",
+                    format=" %B %d, %Y ",
+                    fontsize=15,
+                    background="#A6D6D6",
+                    foreground="#30475E",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#A6D6D6",
+                    foreground="#D6B0B1",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=28,
+                    background="#D6B0B1",
+                    foreground="#30475E",
+                ),
+                widget.Clock(
+                    format=" %H:%M ",
+                    fontsize=16,
+                    background="#D6B0B1",
+                    foreground="#30475E",
+                ),
+
             ],
             24,
+            opacity=0.85,
         ),
     ),
     Screen(
         top=bar.Bar(
             [
-                # widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(foreground="#7C83FD"),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ("#A7D0CD", "#ffffff"),
-                    },
-                    name_transform = lambda name: name.upper(),
+                widget.TextBox(
+                    text="",
+                    fontsize=48,
+                    foreground="#DDDDDD",
+                    background="#0F044C",
                 ),
-                # widget.TextBox("Meethelight", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # widget.Systray(),
-                # widget.KeyboardLayout(configured_keyboards=['us']),
-                widget.Clock(format="%B %d, %Y %H:%M"),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=34,
+                    padding=-8,
+                    foreground="#0F044C",
+                    background="#AD6989",
+                ),
+                widget.GroupBox(
+                    fontsize=30,
+                    active="#DDDDDD",
+                    inactive="#30475E",
+                    padding=5,
+                    background="#AD6989",
+                    borderwidth=0,
+                    this_current_screen_border="#562349",
+                    other_screen_border="#FFE9C5",
+                ),
+                widget.TextBox(
+                    text="  ",
+                    fontsize=34,
+                    padding=-8,
+                    foreground="#AD6989",
+                ),
+                widget.WindowName(fontsize=16, foreground="#DDDDDD"),
+                # DERECHO
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    foreground="#A685E2",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=52,
+                    background="#A685E2",
+                    foreground="#30475E",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    background="#A685E2",
+                ),
+                widget.KeyboardLayout(
+                    configured_keyboards=['us', 'latam'],
+                    background="#A685E2",
+                    foreground="#30475E",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    background="#A685E2",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#A685E2",
+                    foreground="#F5F7B2",
+                ),
+                widget.Battery(
+                    full_char=" ",
+                    empty_char=" ",
+                    charge_char=" ",     
+                    discharge_char=" ",
+                    unknown_char=" ",
+                    low_foreground="#D83A56",
+                    format='{char} {percent:2.0%}',
+                    background="#F5F7B2",
+                    foreground="#1B1717",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#F5F7B2",
+                    foreground="#A6D6D6",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=32,
+                    background="#A6D6D6",
+                    foreground="#30475E",
+                ),
+                widget.Clock(
+                    format=" %B %d, %Y ",
+                    fontsize=15,
+                    background="#A6D6D6",
+                    foreground="#30475E",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#A6D6D6",
+                    foreground="#D6B0B1",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=32,
+                    background="#D6B0B1",
+                    foreground="#30475E",
+                ),
+                widget.Clock(
+                    format=" %H:%M ",
+                    fontsize=16,
+                    background="#D6B0B1",
+                    foreground="#30475E",
+                ),
             ],
-            24,
+            26,
+            opacity=0.9,
+            background="#383E56",
         ),
     ),
 ]
@@ -254,6 +451,7 @@ dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
 bring_front_click = False
+
 # Que es esto de cursor_warp?
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
@@ -268,7 +466,6 @@ floating_layout = layout.Floating(float_rules=[
 ])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
-# focus_on_window_activation = "urgent"
 
 # COMANDOS QUE QUIERO QUE SE EJECUTEN AL MOMENTO DE INICIAR LA COMPUTADORA
 ############################################################################
@@ -291,4 +488,4 @@ for command in autostart:
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+wmname = "Meethelight"
