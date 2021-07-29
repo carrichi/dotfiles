@@ -10,15 +10,6 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-# PERSONALIZADOS!
-# from settings.keys import mod, keys 
-# from settings.groups import groups
-# from settings.layouts import layouts, floating_layout
-# from settings.widgets import widget_defaults, extension_defaults
-# from settings.screens import screens
-# from settings.mouse import mouse
-# from settings.path import qtile_path
-
 mod = "mod4" # SUPER (TECLA WINDOWS)
 mod1 = "mod1" # ALT
 
@@ -77,6 +68,9 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Apagar Qtile. "Cerrar sesion"
     ([mod, "control"], "q", lazy.shutdown()),
+
+    # Apagar computadora.
+    ([mod, "control"], "z", lazy.spawn("shutdown now")),
 
     # Comando para ejecutar un unico comando.
     ([mod], "r", lazy.spawncmd()),
@@ -137,7 +131,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
 __groups = {
     1:Group(""),
-    2:Group("", matches=[Match(wm_class=["Brave-browser"])], layouts=[layout.Max()]),
+    # 2:Group("", matches=[Match(wm_class=["Brave-browser"])], layouts=[layout.Max()]),
+    2:Group("", matches=[Match(wm_class=["Brave-browser"])]),
     # 2:Group(""),
     3:Group("", matches=[Match(wm_class=["thunar"])]),
     # 
@@ -190,6 +185,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+
                 widget.TextBox(
                     text="",
                     fontsize=40,
@@ -331,7 +327,7 @@ screens = [
                     background="#AD6989",
                 ),
                 widget.GroupBox(
-                    fontsize=30,
+                    fontsize=32,
                     active="#DDDDDD",
                     inactive="#30475E",
                     padding=5,
@@ -346,7 +342,7 @@ screens = [
                     padding=-8,
                     foreground="#AD6989",
                 ),
-                widget.WindowName(fontsize=16, foreground="#DDDDDD"),
+                widget.WindowName(fontsize=15, foreground="#DDDDDD"),
                 # DERECHO
                 widget.TextBox(
                     text=" ",
@@ -475,6 +471,9 @@ autostart = [
     "feh --bg-fill $HOME/wallpaper.jpg",
     # Aplicar transparencia.
     "picom &",
+    # Sincronizar reloj.
+    # "ntpd -qg",
+    # Guardar reloj en el hardware: hwclock -w
 ]
 
 for command in autostart:
