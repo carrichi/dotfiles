@@ -92,7 +92,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod, "shift"], "m", lazy.spawn("rofi -show")),
     
     # Abrir navegador.
-    ([mod], "u", lazy.spawn("brave")),
+    ([mod], "u", lazy.spawn("firefox")),
+    ([mod, "control"], "u", lazy.spawn("brave")),
 
     # Abrir explorador de archivos.
     ([mod], "y", lazy.spawn("thunar")),
@@ -110,20 +111,21 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Configuracion de volumen
     ([mod, "control"], "s", lazy.spawn("pavucontrol")),
+
     # Volume
-    ([mod, "shift"], "o", lazy.spawn(
-        "amixer --decrease 5"
+    ([mod], "o", lazy.spawn(
+        "amixer -D pulse sset Master 10%+"
     )),
-    ([mod, "shift"], "i", lazy.spawn(
-        "amixer --decrease 5"
+    ([mod], "i", lazy.spawn(
+        "amixer -D pulse sset Master 10%-"
     )),
-    ([mod, "control"], "p", lazy.spawn(
-        "amixer --toggle-mute"
+    ([mod], "p", lazy.spawn(
+        "amixer -D pulse sset Master toggle"
     )),
 
     # Brightness
-    ([mod], "o", lazy.spawn("brightnessctl set +10%")),
-    ([mod], "i", lazy.spawn("brightnessctl set 10%-")),
+    ([mod, "control"], "o", lazy.spawn("brightnessctl set +10%")),
+    ([mod, "control"], "i", lazy.spawn("brightnessctl set 10%-")),
 
     # Distribuciones de teclado
     ([mod1], "space", lazy.widget["keyboardlayout"].next_keyboard()),
@@ -131,11 +133,9 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
 __groups = {
     1:Group(""),
-    # 2:Group("", matches=[Match(wm_class=["Brave-browser"])], layouts=[layout.Max()]),
-    2:Group("", matches=[Match(wm_class=["Brave-browser"])]),
-    # 2:Group(""),
+    # 2:Group("", matches=[Match(wm_class=["Brave-browser"])], layouts=[layout.Max()]),
+    2:Group("", matches=[Match(wm_class=["Brave-browser"]), Match(wm_class=["firefox"])]),
     3:Group("", matches=[Match(wm_class=["thunar"])]),
-    # 
 }
 groups = [__groups[num] for num in __groups]
 
@@ -226,6 +226,25 @@ screens = [
                     text=" ",
                     fontsize=45,
                     padding=-8,
+                    foreground="#77ACF1",
+                ),
+                widget.TextBox(
+                    text="墳 ",
+                    fontsize=30,
+                    padding=0,
+                    background="#77ACF1",
+                    foreground="#1B1717",
+                ),
+                widget.Volume(
+                    fontsize=16,
+                    foreground="#1B1717",
+                    background="#77ACF1",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#77ACF1",
                     foreground="#A685E2",
                 ),
                 widget.TextBox(
@@ -330,7 +349,7 @@ screens = [
                     fontsize=32,
                     active="#DDDDDD",
                     inactive="#30475E",
-                    padding=5,
+                    padding=4,
                     background="#AD6989",
                     borderwidth=0,
                     this_current_screen_border="#562349",
@@ -343,11 +362,32 @@ screens = [
                     foreground="#AD6989",
                 ),
                 widget.WindowName(fontsize=15, foreground="#DDDDDD"),
+
                 # DERECHO
+                #############
+
                 widget.TextBox(
                     text=" ",
                     fontsize=45,
                     padding=-8,
+                    foreground="#77ACF1",
+                ),
+                widget.TextBox(
+                    text="墳 ",
+                    fontsize=30,
+                    padding=0,
+                    background="#77ACF1",
+                    foreground="#1B1717",
+                ),widget.Volume(
+                    fontsize=16,
+                    foreground="#1B1717",
+                    background="#77ACF1",
+                ),
+                widget.TextBox(
+                    text=" ",
+                    fontsize=45,
+                    padding=-8,
+                    background="#77ACF1",
                     foreground="#A685E2",
                 ),
                 widget.TextBox(
