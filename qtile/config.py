@@ -26,7 +26,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Cambiar ventana activa de arriba.
     ([mod], "k", lazy.layout.up()),
     # Cambiar  de ventana sin direccion.
-    ([mod], "space", lazy.layout.next()),
+    #([mod], "space", lazy.layout.next()),
+    ([mod1], "Tab", lazy.layout.next()),
 
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
@@ -69,9 +70,6 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Apagar Qtile. "Cerrar sesion"
     ([mod, "control"], "q", lazy.shutdown()),
 
-    # Apagar computadora.
-    ([mod, "control"], "z", lazy.spawn("shutdown now")),
-
     # Comando para ejecutar un unico comando.
     ([mod], "r", lazy.spawncmd()),
     
@@ -102,8 +100,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod, "shift"], "y", lazy.spawn("ranger")),
 
     # Screenshot
-    #([mod], "s", lazy.spawn("scrot")),
-    #([mod, "shift"], "s", lazy.spawn("scrot -s")),
+    ([mod], "s", lazy.spawn("scrot -s -f 'ss_%Y-%m-%d-%T_$wx$h.png' -e 'mv $f img/ss/' ")),
 
     #####################################
     # COMANDOS SOBRE EL HARDWARE
@@ -129,11 +126,19 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Distribuciones de teclado
     ([mod1], "space", lazy.widget["keyboardlayout"].next_keyboard()),
+
+    # Suspender computadora.
+    ([mod, "control"], "x", lazy.spawn("systemctl suspend")),
+
+    # Reiniciar computadora.
+    ([mod, "control"], "c", lazy.spawn("reboot")),
+
+    # Apagar computadora.
+    ([mod, "control"], "z", lazy.spawn("shutdown now")),
 ]]
 
 __groups = {
     1:Group(""),
-    # 2:Group("", matches=[Match(wm_class=["Brave-browser"])], layouts=[layout.Max()]),
     2:Group("", matches=[Match(wm_class=["Brave-browser"]), Match(wm_class=["firefox"])]),
     3:Group("", matches=[Match(wm_class=["thunar"])]),
 }
@@ -507,24 +512,13 @@ focus_on_window_activation = "smart"
 ############################################################################
 
 autostart = [
-    # Carcar el fondo de pantalla.
-    "feh --bg-fill $HOME/wallpaper.jpg",
+    # Cargar el fondo de pantalla, se elige de forma aleatoria de la carpeta...
+    "feh --bg-fill img/wallpapers/$(echo $(ls img/wallpapers | sort -R | tail -n 1))",
     # Aplicar transparencia.
     "picom &",
-    # Sincronizar reloj.
-    # "ntpd -qg",
-    # Guardar reloj en el hardware: hwclock -w
 ]
 
 for command in autostart:
     os.system(command)
 
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, GitHub issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
-wmname = "Meethelight"
+wmname = "by:Carrichi"
