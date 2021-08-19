@@ -12,7 +12,7 @@ Plug 'ap/vim-css-color'
 " Plugin para mostrar el arbol en la carpeta del archivo.
 Plug 'preservim/nerdtree'
 
-" Plugins para la barra flotante.
+    " Plugins para la barra flotante.
 Plug 'maximbaz/lightline-ale'
 Plug 'itchyny/lightline.vim'
 
@@ -23,10 +23,8 @@ Plug 'hallzy/lightline-onedark'
 Plug 'christoomey/vim-tmux-navigator'
 
 " Plugin para colocar colores en el editor.
-" Plug 'cocopon/iceberg.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'arcticicestudio/nord-vim'
-" Plug 'drewtempelmeyer/palenight.vim'
 
 " Plugin para autocompletado de codigo.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -42,5 +40,14 @@ Plug 'ryanoasis/vim-devicons'
 
 " Syntaxis support 
 Plug 'sheerun/vim-polyglot'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" New floating line
+"Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+
+" If you want to display icons, then use one of these plugins:
+Plug 'kyazdani42/nvim-web-devicons' " lua
+" Floating line superior
+"Plug 'akinsho/nvim-bufferline.lua'
 
 call plug#end()
