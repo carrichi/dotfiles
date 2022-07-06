@@ -91,7 +91,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     
     # Abrir navegador.
     ([mod], "u", lazy.spawn("firefox")),
-    ([mod, "control"], "u", lazy.spawn("brave")),
+    ([mod, "shift"], "u", lazy.spawn("brave")),
 
     # Abrir explorador de archivos.
     ([mod], "y", lazy.spawn("thunar")),
@@ -100,7 +100,10 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod, "shift"], "y", lazy.spawn("ranger")),
 
     # Screenshot
-    ([mod], "s", lazy.spawn("scrot -s -f 'ss_%Y-%m-%d-%T_$wx$h.png' -e 'mv $f img/ss/' ")),
+    # Screenshot con autoguardado en portapapeles
+    ([mod], "s", lazy.spawn("scrot -s -f '/tmp/ss_%Y-%m-%d-%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f' ")),
+    # Screenshot que solo guarda la imagen
+    ([mod, "shift"], "s", lazy.spawn("scrot -s -f 'ss_%Y-%m-%d-%T_$wx$h.png' -e 'mv $f img/ss/' ")),
 
     #####################################
     # COMANDOS SOBRE EL HARDWARE
@@ -121,8 +124,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     )),
 
     # Brightness
-    ([mod, "control"], "o", lazy.spawn("brightnessctl set +10%")),
-    ([mod, "control"], "i", lazy.spawn("brightnessctl set 10%-")),
+    ([mod, "control"], "o", lazy.spawn("brightnessctl set +5%")),
+    ([mod, "control"], "i", lazy.spawn("brightnessctl set 5%-")),
 
     # Distribuciones de teclado
     ([mod1], "space", lazy.widget["keyboardlayout"].next_keyboard()),
@@ -138,9 +141,11 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 ]]
 
 __groups = {
-    1:Group(""),
-    2:Group("", matches=[Match(wm_class=["Brave-browser"]), Match(wm_class=["firefox"])]),
+    1:Group("", matches=[Match(wm_class=["Brave-browser"]), Match(wm_class=["firefox"])]),
+    2:Group(""),
     3:Group("", matches=[Match(wm_class=["thunar"])]),
+    4:Group(""),
+    5:Group(""),
 }
 groups = [__groups[num] for num in __groups]
 
@@ -159,18 +164,22 @@ for i in groups:
     ])
 
 layouts = [
+    #layout.MonadTall(
+        #border_focus='#A7D0CD',
+        #border_width=3,
+        #margin=6,
+    #), 
     layout.Columns(
         border_focus='#A7D0CD',
         border_width=3,
-        margin=6,
+        margin=3,
     ),
     layout.Max(),
-    
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    # layout.MonadTall(),
+    
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -190,148 +199,154 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-
                 widget.TextBox(
                     text="",
-                    fontsize=40,
+                    fontsize=48,
                     foreground="#DDDDDD",
                     background="#0F044C",
                 ),
                 widget.TextBox(
                     text=" ",
-                    fontsize=38,
+                    fontsize=34,
                     padding=-8,
                     foreground="#0F044C",
-                    background="#AD6989",
+                    background="#396EB0",
                 ),
                 widget.GroupBox(
-                    fontsize=24,
-                    active="#DBC6EB",
+                    fontsize=32,
+                    active="#DDDDDD",
                     inactive="#30475E",
+                    padding=4,
                     borderwidth=0,
-                    background="#AD6989",
-                    padding=5,
                     this_current_screen_border="#562349",
                     other_screen_border="#FFE9C5",
-                ),
-                widget.Prompt(
-                    fontsize=15,
-                    prompt=" Ejecutar: ",
-                    background="#AD6989",
-                    foreground="#DDDDDD",
+                    background="#396EB0",
                 ),
                 widget.TextBox(
-                    text="  ",
-                    fontsize=38,
-                    padding=-8,
-                    foreground="#AD6989",
-                ),
-                widget.WindowName(fontsize=12.8, foreground="#DDDDDD"),
-                widget.TextBox(
-                    text=" ",
-                    fontsize=45,
-                    padding=-8,
-                    foreground="#77ACF1",
-                ),
-                widget.TextBox(
-                    text="墳 ",
-                    fontsize=30,
+                    text="",
+                    fontsize=34,
                     padding=0,
-                    background="#77ACF1",
-                    foreground="#1B1717",
-                ),
-                widget.Volume(
-                    fontsize=16,
-                    foreground="#1B1717",
-                    background="#77ACF1",
-                ),
-                widget.TextBox(
-                    text=" ",
-                    fontsize=45,
-                    padding=-8,
-                    background="#77ACF1",
-                    foreground="#A685E2",
+                    foreground="#396EB0",
+                    background='#DADDFC',
                 ),
                 widget.TextBox(
                     text="",
-                    fontsize=42,
-                    background="#A685E2",
-                    foreground="#30475E",
-                ),
-                widget.TextBox(
-                    text=" ",
-                    background="#A685E2",
+                    fontsize=52,
+                    padding=5,
+                    background="#DADDFC",
+                    foreground="#2E4C6D", #texto
                 ),
                 widget.KeyboardLayout(
                     configured_keyboards=['us', 'latam'],
-                    background="#A685E2",
-                    foreground="#30475E",
-                ),
-               widget.TextBox(
-                    text=" ",
-                    background="#A685E2",
-                ),
-               widget.TextBox(
-                    text=" ",
-                    fontsize=45,
-                    padding=-8,
-                    background="#A685E2",
-                    foreground="#F5F7B2",
-                ),
-                widget.Battery(
-                    full_char=" ",
-                    empty_char=" ",
-                    charge_char=" ",     
-                    discharge_char=" ",
-                    unknown_char=" ",
-                    low_foreground="#D83A56",
-                    format='{char} {percent:2.0%}',
-                    background="#F5F7B2",
-                    foreground="#1B1717",
+                    background="#DADDFC",
+                    foreground="#2E4C6D", #texto
+                    padding=6,
                 ),
                 widget.TextBox(
-                    text=" ",
+                    text="",
+                    fontsize=34,
+                    padding=0,
+                    foreground="#DADDFC",
+                ),
+                widget.WindowName(fontsize=15, foreground="#DDDDDD"),
+
+                # DERECHO
+                #############
+
+                widget.TextBox(
+                    text="",
                     fontsize=45,
-                    padding=-8,
-                    background="#F5F7B2",
-                    foreground="#A6D6D6",
+                    padding=0,
+                    foreground="#E9D5DA",
+                ),
+                widget.TextBox(
+                    text="墳",
+                    fontsize=30,
+                    padding=0,
+                    background="#E9D5DA",
+                    foreground="#1B1717",
+                ),widget.Volume(
+                    fontsize=16,
+                    padding=10,
+                    foreground="#1B1717",
+                    background="#E9D5DA",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=45,
+                    padding=0,
+                    background="#E9D5DA",
+                    foreground="#363062",
+                ),
+                widget.Battery(
+                    full_char='',
+                    empty_char='',
+                    charge_char='',     
+                    discharge_char='',
+                    unknown_char='',
+                    low_foreground="#D83A56",
+                    format='{char} {percent:2.0%}',
+                    background="#363062",
+                    foreground="#E9D5DA",
+                    fontsize=16,
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=45,
+                    padding=0,
+                    background="#363062",
+                    foreground="#750550",
                 ),
                 widget.TextBox(
                     text="",
-                    fontsize=28,
-                    background="#A6D6D6",
-                    foreground="#30475E",
+                    fontsize=32,
+                    background="#750550",
+                    foreground="#E9D5DA",
                 ),
                 widget.Clock(
-                    fmt="{}",
                     format=" %B %d, %Y ",
                     fontsize=15,
-                    background="#A6D6D6",
-                    foreground="#30475E",
+                    background="#750550",
+                    foreground="#E9D5DA",
                 ),
                 widget.TextBox(
-                    text=" ",
+                    text="",
                     fontsize=45,
-                    padding=-8,
-                    background="#A6D6D6",
-                    foreground="#D6B0B1",
+                    padding=0,
+                    background="#750550",
+                    foreground="#4C0027",
                 ),
                 widget.TextBox(
                     text="",
-                    fontsize=28,
-                    background="#D6B0B1",
-                    foreground="#30475E",
+                    fontsize=32,
+                    background="#4C0027",
+                    foreground="#E9D5DA",
                 ),
                 widget.Clock(
                     format=" %H:%M ",
                     fontsize=16,
-                    background="#D6B0B1",
-                    foreground="#30475E",
+                    background="#4C0027",
+                    foreground="#E9D5DA",
                 ),
-
+                widget.TextBox(
+                    text="",
+                    fontsize=45,
+                    padding=0,
+                    background="#4C0027",
+                    foreground="#383E56",
+                ),
+                widget.NetGraph(
+                    fill_color='#827397.3',
+                    graph_color='#E9D5DA',
+                    border_color='#383E56',
+                    border_with=0,
+                    margin_x=0,
+                    margin_y=0,
+                ),
             ],
-            24,
-            opacity=0.85,
+            26,
+            opacity=0.9,
+            background="#383E56",
         ),
     ),
     Screen(
@@ -348,23 +363,43 @@ screens = [
                     fontsize=34,
                     padding=-8,
                     foreground="#0F044C",
-                    background="#AD6989",
+                    background="#396EB0",
                 ),
                 widget.GroupBox(
                     fontsize=32,
                     active="#DDDDDD",
                     inactive="#30475E",
                     padding=4,
-                    background="#AD6989",
                     borderwidth=0,
                     this_current_screen_border="#562349",
                     other_screen_border="#FFE9C5",
+                    background="#396EB0",
                 ),
                 widget.TextBox(
-                    text="  ",
+                    text="",
                     fontsize=34,
-                    padding=-8,
-                    foreground="#AD6989",
+                    padding=0,
+                    foreground="#396EB0",
+                    background='#DADDFC',
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=52,
+                    padding=5,
+                    background="#DADDFC",
+                    foreground="#2E4C6D", #texto
+                ),
+                widget.KeyboardLayout(
+                    configured_keyboards=['us', 'latam'],
+                    background="#DADDFC",
+                    foreground="#2E4C6D", #texto
+                    padding=6,
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=34,
+                    padding=0,
+                    foreground="#DADDFC",
                 ),
                 widget.WindowName(fontsize=15, foreground="#DDDDDD"),
 
@@ -372,103 +407,94 @@ screens = [
                 #############
 
                 widget.TextBox(
-                    text=" ",
+                    text="",
                     fontsize=45,
-                    padding=-8,
-                    foreground="#77ACF1",
+                    padding=0,
+                    foreground="#E9D5DA",
                 ),
                 widget.TextBox(
-                    text="墳 ",
+                    text="墳",
                     fontsize=30,
                     padding=0,
-                    background="#77ACF1",
+                    background="#E9D5DA",
                     foreground="#1B1717",
                 ),widget.Volume(
                     fontsize=16,
+                    padding=10,
                     foreground="#1B1717",
-                    background="#77ACF1",
+                    background="#E9D5DA",
                 ),
                 widget.TextBox(
-                    text=" ",
+                    text="",
                     fontsize=45,
-                    padding=-8,
-                    background="#77ACF1",
-                    foreground="#A685E2",
-                ),
-                widget.TextBox(
-                    text="",
-                    fontsize=52,
-                    background="#A685E2",
-                    foreground="#30475E",
-                ),
-                widget.TextBox(
-                    text=" ",
-                    background="#A685E2",
-                ),
-                widget.KeyboardLayout(
-                    configured_keyboards=['us', 'latam'],
-                    background="#A685E2",
-                    foreground="#30475E",
-                ),
-                widget.TextBox(
-                    text=" ",
-                    background="#A685E2",
-                ),
-                widget.TextBox(
-                    text=" ",
-                    fontsize=45,
-                    padding=-8,
-                    background="#A685E2",
-                    foreground="#F5F7B2",
+                    padding=0,
+                    background="#E9D5DA",
+                    foreground="#363062",
                 ),
                 widget.Battery(
-                    full_char=" ",
-                    empty_char=" ",
-                    charge_char=" ",     
-                    discharge_char=" ",
-                    unknown_char=" ",
+                    full_char='',
+                    empty_char='',
+                    charge_char='',     
+                    discharge_char='',
+                    unknown_char='',
                     low_foreground="#D83A56",
                     format='{char} {percent:2.0%}',
-                    background="#F5F7B2",
-                    foreground="#1B1717",
+                    background="#363062",
+                    foreground="#E9D5DA",
+                    fontsize=16,
                 ),
                 widget.TextBox(
-                    text=" ",
+                    text="",
                     fontsize=45,
-                    padding=-8,
-                    background="#F5F7B2",
-                    foreground="#A6D6D6",
+                    padding=0,
+                    background="#363062",
+                    foreground="#750550",
                 ),
                 widget.TextBox(
                     text="",
                     fontsize=32,
-                    background="#A6D6D6",
-                    foreground="#30475E",
+                    background="#750550",
+                    foreground="#E9D5DA",
                 ),
                 widget.Clock(
                     format=" %B %d, %Y ",
                     fontsize=15,
-                    background="#A6D6D6",
-                    foreground="#30475E",
+                    background="#750550",
+                    foreground="#E9D5DA",
                 ),
                 widget.TextBox(
-                    text=" ",
+                    text="",
                     fontsize=45,
-                    padding=-8,
-                    background="#A6D6D6",
-                    foreground="#D6B0B1",
+                    padding=0,
+                    background="#750550",
+                    foreground="#4C0027",
                 ),
                 widget.TextBox(
                     text="",
                     fontsize=32,
-                    background="#D6B0B1",
-                    foreground="#30475E",
+                    background="#4C0027",
+                    foreground="#E9D5DA",
                 ),
                 widget.Clock(
                     format=" %H:%M ",
                     fontsize=16,
-                    background="#D6B0B1",
-                    foreground="#30475E",
+                    background="#4C0027",
+                    foreground="#E9D5DA",
+                ),
+                widget.TextBox(
+                    text="",
+                    fontsize=45,
+                    padding=0,
+                    background="#4C0027",
+                    foreground="#383E56",
+                ),
+                widget.NetGraph(
+                    fill_color='#827397.3',
+                    graph_color='#E9D5DA',
+                    border_color='#383E56',
+                    border_with=0,
+                    margin_x=0,
+                    margin_y=0,
                 ),
             ],
             26,
@@ -513,7 +539,7 @@ focus_on_window_activation = "smart"
 
 autostart = [
     # Cargar el fondo de pantalla, se elige de forma aleatoria de la carpeta...
-    "feh --bg-fill img/wallpapers/$(echo $(ls img/wallpapers | sort -R | tail -n 1))",
+    "feh --no-fehbg --bg-fill img/wallpapers/$(echo $(ls img/wallpapers | sort -R | tail -n 1))",
     # Aplicar transparencia.
     "picom &",
 ]
