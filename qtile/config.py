@@ -141,9 +141,9 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 ]]
 
 __groups = {
-    1:Group("", matches=[Match(wm_class=["Brave-browser"]), Match(wm_class=["firefox"])]),
+    1:Group(""),
     2:Group(""),
-    3:Group("", matches=[Match(wm_class=["thunar"])]),
+    3:Group(""),
     4:Group(""),
     5:Group(""),
 }

@@ -14,7 +14,7 @@ nmap <Leader>Q :q!<CR>
 
     " NERDTreeFind
 nmap <Leader>t :NERDTreeFind<CR>
-
+nmap <Leader>T :NERDTreeToggle<CR>
 
 	" Cambio entre pestanas
 " Pestana siguiente
@@ -22,16 +22,18 @@ nmap <Leader>h :tabp<CR>
 " Pestana anterior
 nmap <Leader>l :tabn<CR>
 
-	"FZF
+"FZF
 map <leader>f :Files<CR>
 map <leader>s :Ag<CR>
 
 	"Scroll
-nnoremap <C-j> 10<C-e>
-nnoremap <C-k> 10<C-y>
 nmap <Leader><Leader>s <Plug>(easymotion-s2)
 
-" COC______________________________________________
+    " DBUI DADBOD
+map <leader>b :DBUIToggle<CR>
+map <leader>E :DBUIToggle<CR>
+
+    " COC______________________________________________
 "
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -116,4 +118,3 @@ endif
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-

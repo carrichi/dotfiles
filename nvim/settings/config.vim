@@ -1,7 +1,7 @@
 "" CONFIGURACION DE LOS PLUGINS
 """"""""""""""""""""""""""""""""""
 
-" let g:closetag_filenames = '*.html, *.js, *.jsx, *.ts, *.tsx'
+let g:closetag_filenames = '*.html, *.js, *.jsx, *.ts, *.tsx, *.sql, *plsql'
 
   " Lightline
 let g:lightline = {
@@ -83,16 +83,79 @@ command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 
-" Vim polyglot
-" El plugin vim-jsx-pretty utiliza vim-polyglot
-" Se desabilita de polyglot para que no se rompa.
-"let g:polyglot_disabled = ['jsx']
+" Snippet configuration
+let g:utilSnipsExpandTrigger="<tab>"
 
-" LSP CONFIGURACION
-" require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
+" SQL Syntax
+let g:sql_type_default = 'pgsql'
+
+" DEOPETE
+let g:deoplete#enable_at_startup = 1
+
+" DADBOD UI
+let g:gb_ui_use_nerd_fonts = 1
+let g:dbs = {
+  \ 'mtl' : 'postgresql://localhost/mtldb'
+  \}
+
+" DADBOD COMPLETION
+"
+"
+" hrsh7th/nvim-cmp
+autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+"
+" Source is automatically added, you just need to include it in the chain complete list
+let g:completion_chain_complete_list = {
+    \   'sql': [
+    \    {'complete_items': ['vim-dadbod-completion']},
+    \   ],
+    \ }
+" Make sure `substring` is part of this list. Other items are optional for this completion source
+let g:completion_matching_strategy_list = ['exact', 'substring']
+" Useful if there's a lot of camel case items
+let g:completion_matching_ignore_case = 1
 
 lua << EOF
+require ('gitsigns').setup {
+    signs = {
+      add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+      change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+      delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+      topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+      changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    },
+    signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
+    numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
+    linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
+    word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+    watch_gitdir = {
+      interval = 1000,
+      follow_files = true
+    },
+    attach_to_untracked = true,
+    current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+    current_line_blame_opts = {
+      virt_text = true,
+      virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+      delay = 1000,
+      ignore_whitespace = false,
+    },
+    current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+    sign_priority = 6,
+    update_debounce = 100,
+    status_formatter = nil, -- Use default
+    max_file_length = 40000,
+    preview_config = {
+      -- Options passed to nvim_open_win
+      border = 'single',
+      style = 'minimal',
+      relative = 'cursor',
+      row = 0,
+      col = 1
+    },
+    yadm = {
+      enable = false
+    }
+  }
 EOF
 
-" Snippet configuration
-"let g:utilSnipsExpandTrigger="<tab>"

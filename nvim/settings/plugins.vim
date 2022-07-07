@@ -2,7 +2,7 @@
 """"""""""""""""""""""""""""""
 
 call plug#begin('~/.config/nvim/plugged')
-
+  
 " Plugin para atajos de teclado en html.
 Plug 'mattn/emmet-vim'
 
@@ -26,7 +26,6 @@ Plug 'arcticicestudio/nord-vim'
 
 " Plugins para autocompletado de codigo.
 Plug 'neovim/nvim-lspconfig'
-"Plug 'nvim-lua/completion-nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 " Syntaxis support 
@@ -36,13 +35,13 @@ Plug 'pangloss/vim-javascript'
 
 " Git
 Plug 'tpope/vim-fugitive'
+Plug 'lewis6991/gitsigns.nvim'
 
 " Indent lines
 Plug 'Yggdroot/indentLine'
 
 " Icons
 Plug 'ryanoasis/vim-devicons'
-
 " If you want to display icons, then use one of these plugins:
 Plug 'kyazdani42/nvim-web-devicons'
 
@@ -53,7 +52,6 @@ Plug 'alvan/vim-closetag'
 
 " Snippets
 Plug 'SirVer/ultisnips'
-  " For vim ?
 Plug 'honza/vim-snippets'
   " Snippets para React
 Plug 'mlaursen/vim-react-snippets'
@@ -62,6 +60,24 @@ Plug 'mlaursen/vim-react-snippets'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'easymotion/vim-easymotion'
+
+" Comentarios
 Plug 'preservim/nerdcommenter'
+
+" Move text
+Plug 'matze/vim-move'
+
+" SQL & Postgresql
+Plug 'lifepillar/pgsql.vim'
+Plug 'tpope/vim-dadbod'
+  Plug 'kristijanhusak/vim-dadbod-ui'
+  Plug 'kristijanhusak/vim-dadbod-completion'
+
+Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
+
+" Completion Engine
+Plug 'hrsh7th/nvim-cmp'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 call plug#end()
