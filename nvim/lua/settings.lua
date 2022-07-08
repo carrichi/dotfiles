@@ -4,16 +4,16 @@
 
 ----- Default options
 opt.number = true
-opt.mouse = a
+opt.mouse = 'a'
 opt.numberwidth = 3
 opt.syntax = enable -- Nvim (por defecto)
 opt.showcmd = true -- Nvim (por defecto)
 opt.encoding = 'utf-8' -- Nvim (por defecto)
 opt.ruler = true -- Que hace ruler?
--- o.cursorline = true
--- o.relativenumber = true
---o.noshowmode = true -- El modo esta en la statusbar.
-opt.clipboard = unnamedplus
+opt.cursorline = true
+opt.relativenumber = true
+cmd[[set noshowmode]] -- Disable default mode in statusbar.
+opt.clipboard = 'unnamedplus'
 opt.lazyredraw = true -- Para no reescribir todo el archivo al guardar ??
 
 ----- Theme

@@ -24,6 +24,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/tokyonight.nvim'
 Plug ('dracula/vim', { as = 'dracula' })
 Plug 'joshdick/onedark.vim'
+-- Terminal
+Plug ('akinsho/toggleterm.nvim', { tag = 'v1.*' })
 
 ----- Syntax support
 -- HTML/CSS
@@ -55,7 +57,6 @@ Plug 'feline-nvim/feline.nvim'
 ----- Autocomplete
 -- Languaje support
 Plug 'neovim/nvim-lspconfig' -- El bueno!
---Plug 'williamboman/nvim-lsp-installer' -- For nvim-lspconfig Recommended by Neovim.
 Plug 'hrsh7th/nvim-cmp' -- Recommended by Neovim ESTE CONFIGURA LOS SERVIDORES.
 Plug 'hrsh7th/cmp-nvim-lsp' -- Recommenden by Neovim?
 --Plug 'hrsh7th/cmp-buffer'
@@ -66,8 +67,6 @@ Plug 'prabirshrestha/vim-lsp' -- Initial server (Por debajo de nvim-lspconfig)
 Plug 'lifepillar/pgsql.vim'
 -- Snippets
 Plug 'L3MON4D3/LuaSnip'
---Plug 'SirVer/ultisnips' -- To nvim-cmp
---Plug 'quangnguyen30192/cmp-nvim-ultisnips' -- To nvim-cmp
 --Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} -- Optional from cmp-nvim-ultisnips,  requires Neovim nightly.
 -- React
 Plug 'mlaursen/vim-react-snippets'
@@ -90,6 +89,5 @@ require("nvim_gitsigns")
 require("nvim_feline")
 require("nvim_lspconfig")
 require("nvim_cmp")
---require("nvim_cmp_ultisnips")
+require("nvim_toggleterm")
 --require("nvim_treesitter")
---require("nvim_lsp_installer")
