@@ -33,48 +33,47 @@ local vi_mode_colors = {
     NONE = colors.yellow
 }
 
-local function file_osinfo()
-    local os = vim.bo.fileformat:upper()
-    local icon
-    if os == 'UNIX' then
-        icon = ' '
-    elseif os == 'MAC' then
-        icon = ' '
-    else
-        icon = ' '
-    end
-    return icon .. os
-end
-
 local lsp = require 'feline.providers.lsp'
 local vi_mode_utils = require 'feline.providers.vi_mode'
 
-local lsp_get_diag = function(str)
-  --local count = vim.lsp.diagnostic.get_count(str)
-  local count = vim.diagnostic.get(str)
-  return (count > 0) and ' '..count..' ' or ''
+local function count(diagnostics)
+  local ocurrences = 0
+  for _ in pairs(diagnostics) do
+    ocurrences = ocurrences + 1
+  end
+  return ocurrences
 end
 
--- LuaFormatter off
+-- With help of diagnostic-handlers-example
+local lsp_get_diag = function(status)
+    if status == 'WARN' then
+      local warnings = count(vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN }))
+      return ' ' .. warnings
+    elseif status == 'ERROR' then
+      local errors = count(vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR }))
+      return ' ' .. errors
+    elseif status == 'HINT' then
+      local hints = count(vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT }))
+      return ' ' .. hints
+    end
+end
 
 local comps = {
     vi_mode = {
-        left = {
-            provider = function()
-              return '  ' .. vi_mode_utils.get_vim_mode()
-            end,
-            hl = function()
-                local val = {
-                    name = vi_mode_utils.get_mode_highlight_name(),
-                    fg = vi_mode_utils.get_mode_color(),
-                    -- fg = colors.bg
-                }
-                return val
-            end,
-            right_sep = ' '
+      left = {
+        provider = function()
+          return '  ' .. vi_mode_utils.get_vim_mode()
+          end,
+        hl = function()
+          local val = {
+            name = vi_mode_utils.get_mode_highlight_name(),
+            fg = vi_mode_utils.get_mode_color(),
+          }
+          return val
+          end,
+          right_sep = ' '
         },
         right = {
-             --provider = '▊',
             provider = '' ,
             hl = function()
                 local val = {
@@ -113,14 +112,6 @@ local comps = {
         type = {
             provider = 'file_type'
         },
-        os = {
-            provider = file_osinfo,
-            left_sep = ' ',
-            hl = {
-                fg = colors.violet,
-                style = 'bold'
-            }
-        },
         position = {
             provider = 'position',
             left_sep = ' ',
@@ -153,68 +144,57 @@ local comps = {
         }
     },
     diagnos = {
-        err = {
-            -- provider = 'diagnostic_errors',
-            provider = function()
-                return '' .. lsp_get_diag("Error")
-            end,
-            -- left_sep = ' ',
-            enabled = function() return lsp.diagnostics_exist('Error') end,
-            hl = {
-                fg = colors.red
-            }
-        },
-        warn = {
-            -- provider = 'diagnostic_warnings',
-            provider = function()
-                return '' ..  lsp_get_diag("WARN")
-            end,
-            -- left_sep = ' ',
-            enabled = function() return lsp.diagnostics_exist('WARN') end,
-            hl = {
-                fg = colors.yellow
-            }
-        },
-        info = {
-            -- provider = 'diagnostic_info',
-            provider = function()
-                return '' .. lsp_get_diag("INFO")
-            end,
-            -- left_sep = ' ',
-            enabled = function() return lsp.diagnostics_exist('INFO') end,
-            hl = {
-                fg = colors.blue
-            }
-        },
-        hint = {
-            -- provider = 'diagnostic_hints',
-            provider = function()
-                return '' .. lsp_get_diag("Hint")
-            end,
-            -- left_sep = ' ',
-            enabled = function() return lsp.diagnostics_exist('Hint') end,
-            hl = {
-                fg = colors.cyan
-            }
-        },
+      err = {
+          -- provider = 'diagnostic_errors',
+          provider = function()
+              return '' .. lsp_get_diag("ERROR")
+          end,
+          enabled = function() return lsp.diagnostics_exist('ERROR') end,
+          --left_sep = ' ',
+          right_sep = ' ',
+          hl = {
+              fg = colors.red,
+          }
+      },
+      warn = {
+          provider = function()
+              return '' ..  lsp_get_diag("WARN")
+          end,
+          enabled = function() return lsp.diagnostics_exist('WARN') end,
+          --left_sep = ' ',
+          right_sep = ' ',
+          hl = {
+            fg = colors.yellow,
+          }
+      },
+      hint = {
+        provider = function()
+          return 'ﯦ' ..  lsp_get_diag("HINT")
+          end,
+          enabled = function() return lsp.diagnostics_exist('HINT') end,
+          --left_sep = ' ',
+          right_sep = ' ',
+          hl = {
+            fg = colors.cyan,
+          }
+      },
     },
     lsp = {
-        name = {
-            provider = 'lsp_client_names',
-            -- left_sep = ' ',
-            right_sep = ' ',
-            -- icon = '  ',
-            icon = '慎',
-            hl = {
-                fg = colors.yellow
-            }
+      name = {
+        provider = 'lsp_client_names',
+        icon = '慎',
+        -- left_sep = ' ',
+        --right_sep = ' ',
+        hl = {
+          fg = colors.yellow,
+          style = 'bold'
         }
+      }
     },
     git = {
         branch = {
             provider = 'git_branch',
-            icon = ' ',
-            -- icon = ' ',
+            icon = ' ',
             left_sep = ' ',
             hl = {
                 fg = colors.violet,
@@ -256,10 +236,10 @@ table.insert(components.inactive, {})
 
 table.insert(components.active[1], comps.vi_mode.left)
 table.insert(components.active[1], comps.file.info)
-table.insert(components.active[1], comps.git.branch)
-table.insert(components.active[1], comps.git.add)
-table.insert(components.active[1], comps.git.change)
-table.insert(components.active[1], comps.git.remove)
+table.insert(components.active[2], comps.git.branch)
+table.insert(components.active[2], comps.git.add)
+table.insert(components.active[2], comps.git.change)
+table.insert(components.active[2], comps.git.remove)
 table.insert(components.inactive[1], comps.vi_mode.left)
 table.insert(components.inactive[1], comps.file.info)
 table.insert(components.active[3], comps.diagnos.err)
@@ -267,37 +247,34 @@ table.insert(components.active[3], comps.diagnos.warn)
 table.insert(components.active[3], comps.diagnos.hint)
 table.insert(components.active[3], comps.diagnos.info)
 table.insert(components.active[3], comps.lsp.name)
-table.insert(components.active[3], comps.file.os)
 table.insert(components.active[3], comps.file.position)
 table.insert(components.active[3], comps.line_percentage)
 table.insert(components.active[3], comps.scroll_bar)
 table.insert(components.active[3], comps.vi_mode.right)
 
 
--- TreeSitter
--- local ts_utils = require("nvim-treesitter.ts_utils")
--- local ts_parsers = require("nvim-treesitter.parsers")
--- local ts_queries = require("nvim-treesitter.query")
---[> table.insert(components.active[2], {
- -- provider = function()
-  --  local node = require("nvim-treesitter.ts_utils").get_node_at_cursor()
-   -- return ("%d:%s [%d, %d] - [%d, %d]")
-    --  :format(node:symbol(), node:type(), node:range())
---  end,
- -- enabled = function()
-  --  local ok, ts_parsers = pcall(require, "nvim-treesitter.parsers")
-   -- return ok and ts_parsers.has_parser()
- -- end
---}) ]]
+ --TreeSitter
+ --local ts_utils = require("nvim-treesitter.ts_utils")
+ --local ts_parsers = require("nvim-treesitter.parsers")
+ --local ts_queries = require("nvim-treesitter.query")
+--[[ table.insert(components.active[2], {
+  provider = function()
+    local node = require("nvim-treesitter.ts_utils").get_node_at_cursor()
+    return ("%d:%s [%d, %d] - [%d, %d]")
+      :format(node:symbol(), node:type(), node:range())
+  end,
+  enabled = function()
+    local ok, ts_parsers = pcall(require, "nvim-treesitter.parsers")
+    return ok and ts_parsers.has_parser()
+  end
+})]]
 
--- require'feline'.setup {}
 require'feline'.setup {
     colors = { bg = colors.bg, fg = colors.fg },
     components = components,
     vi_mode_colors = vi_mode_colors,
     force_inactive = {
         filetypes = {
-            'packer',
             'NvimTree',
             'fugitive',
             'fugitiveblame'

@@ -40,5 +40,8 @@ mapper('n', '<leader><leader>s', '<Plug>(easymotion-s2)') -- Search in current f
 mapper('n', '<leader>b', ':DBUIToggle<CR>') -- Toggle UI
 
 -- Gitsigns
-mapper('n', '<leader>gh', ':Gitsigns toggle_current_line_blame<CR>') -- Disable show last commit in line
+--mapper('n', '<leader>gh', ':Gitsigns toggle_current_line_blame<CR>') -- Disable show last commit in line
 
+-- Toggleterm
+mapper('n', '<leader><leader>t', ':ToggleTerm size=50 direction=vertical<CR>') -- Disable show last commit in line
+mapper('n', '<leader><leader>T', ':ToggleTerm direction=float<CR>') -- Disable show last commit in line

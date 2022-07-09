@@ -2,6 +2,7 @@
 ---- nvim-cmp-setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
+require('cmp_git').setup{}
 cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
@@ -50,8 +51,7 @@ cmp.setup({
     sources = cmp.config.sources(
       {
         { name = 'nvim_lsp' },
-        --{ name = 'ultisnips' }, -- For ultisnips users.
-        { name = 'luasnip' }, -- For ultisnips users.
+        { name = 'luasnip' },
       },
     { 
       { name = 'buffer' } 
@@ -63,7 +63,8 @@ cmp.setup({
 cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources(
     {
-      { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+      --{ name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+      { name = 'git' }, -- You can specify the `cmp_git` source if you were installed it.
     }, 
     { { name = 'buffer' } }
   )
@@ -93,38 +94,3 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
----------------------------------------
------- SERVERS ADDED
--- Javascript
-require('lspconfig')['tsserver'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags
-}
--- JSON
-require('lspconfig')['jsonls'].setup{
-  capabilities = capabilities
-}
--- Python
--- Can be 'pyright' o 'jedi-languaje-server'
-require('lspconfig')['jedi_language_server'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags
-}
--- HTML
-require('lspconfig')['html'].setup{
-  capabilities = capabilities
-}
--- CSS
-require('lspconfig')['cssls'].setup{ -- Add server
-  capabilities = capabilities
-}
-require('lspconfig')['cssmodules_ls'].setup{} -- Add Go-to-definition
--- SQL (MySQL, PostgreSQL, SQLite3)
-require('lspconfig')['sqlls'].setup{}
--- Dockerfile
-require('lspconfig')['dockerls'].setup{}
--- Vue
-require('lspconfig')['vuels'].setup{}
--- Eslint
---require('lspconfig')['eslint'].setup{}
---vim.cmd[[autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll]] -- Fix all problems on save.

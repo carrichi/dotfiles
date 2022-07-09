@@ -42,6 +42,10 @@ opt.incsearch = true -- Incremental searching
 opt.ignorecase = true -- Searches are case insensitive
 opt.smartcase = true -- Unless they contain at least one capital letter
 
+----- DBUI
+vim.g.dbs = { mtldb = 'postgres://localhost/mtldb' }
+
+
 ----- COC?
 -- Text Edit might fail if hidden is not set
 opt.hidden = true -- For buffers?
