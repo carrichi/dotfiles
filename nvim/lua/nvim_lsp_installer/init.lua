@@ -9,6 +9,16 @@ require('nvim-lsp-installer').setup{
   }
 }
 
+--Enable (broadcasting) snippet capability for completion
+
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+local lsp_flags = {
+  -- This is the default in Nvim 0.7+
+  debounce_text_changes = 150,
+}
+
 ---------------------------------------
 ---------------------------------------
 ------ SERVERS ADDED
@@ -27,35 +37,71 @@ require('lspconfig')['jsonls'].setup{
 -- Can be 'pyright' o 'jedi-languaje-server'
 require('lspconfig')['jedi_language_server'].setup{
   on_attach = on_attach,
-  flags = lsp_flags
+  flags = lsp_flags,
+  capabilities = capabilities
 }
 -- HTML
 require('lspconfig')['html'].setup{
   capabilities = capabilities
 }
+-- Emmet
+require('lspconfig')['emmet_ls'].setup{
+    capabilities = capabilities
+}
 -- CSS
 require('lspconfig')['cssls'].setup{ -- Add server
   capabilities = capabilities
 }
-require('lspconfig')['cssmodules_ls'].setup{} -- Add Go-to-definition
+require('lspconfig')['cssmodules_ls'].setup{
+  capabilities = capabilities
+} -- Add Go-to-definition
 -- SQL (MySQL, PostgreSQL, SQLite3)
-require('lspconfig')['sqlls'].setup{
-  root_dir = function() 
-    return '$HOME/.local/share/nvim/lsp_servers/sqlls'
-  end
-}
+-- Have an CALLBACK NOT FOUND ERROR.
+--require('lspconfig')['sqlls'].setup{
+  --root_dir = function()
+    --return '/home/carl/.local/share/nvim/lsp_servers/sqlls'
+  --end,
+  --handlers = {
+    --["textDocument/publishDiagnostics"] = vim.lsp.with(
+      --vim.lsp.diagnostic.on_publish_diagnostics, {
+        --virtual_text = true
+      --}
+      --)
+  --},
+  --connections = {
+    --name = 'sqlls',
+    --adapter = 'postgres',
+    --host = 'localhost',
+    --port = 5432,
+    --user = 'postgres',
+    --database = 'mtldb'
+  --}
+--}
 require('lspconfig')['sqls'].setup{ -- nanotee/sqls
+  capabilities = capabilities,
   on_attach = function(client, bufnr)
     require('sqls').on_attach(client,bufnr)
   end
 }
 -- Dockerfile
-require('lspconfig')['dockerls'].setup{}
+require('lspconfig')['dockerls'].setup{
+  capabilities = capabilities
+}
 -- Vue
-require('lspconfig')['vuels'].setup{}
+require('lspconfig')['vuels'].setup{
+  capabilities = capabilities
+}
 -- Eslint
-require('lspconfig')['eslint'].setup{}
-vim.cmd[[autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll]] -- Fix all problems on save.
+require('lspconfig')['eslint'].setup{
+  capabilities = capabilities
+}
+--vim.cmd[[autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll]] -- Fix all problems on save.
 -- Lua
-require('lspconfig')['sumneko_lua'].setup{}
+require('lspconfig')['sumneko_lua'].setup{
+  capabilities = capabilities
+}
+-- Django
+require('lspconfig')['tailwindcss'].setup{
+  capabilities = capabilities
+}
 

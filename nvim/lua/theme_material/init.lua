@@ -34,6 +34,7 @@ require('material').setup({
     gitsigns = true,
     telescope = true,
     nvim_tree = true,
+		indent_blankline = true,
   },
 })
 ----- Styles available
@@ -42,5 +43,6 @@ require('material').setup({
 -- oceanic
 -- palenight
 -- deep ocean
-vim.g.material_style = 'palenight'
-vim.cmd[[colorscheme material]]
+--vim.g.material_style = 'palenight' -- normal
+vim.g.material_style = 'deep ocean' -- hight contrast
+vim.cmd 'colorscheme material'

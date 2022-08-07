@@ -12,11 +12,15 @@ Plug 'kyazdani42/nvim-tree.lua' -- Show tree file
 Plug 'christoomey/vim-tmux-navigator' -- Move in panels
 Plug 'matze/vim-move' -- Move lines
 Plug 'preservim/nerdcommenter' -- Toggle comments
-Plug 'easymotion/vim-easymotion' -- Move in archive faster
+--Plug 'easymotion/vim-easymotion' -- Move in archive faster -- I don't use, but it's useful.
+Plug ('akinsho/bufferline.nvim', { tag = 'v2.*' })
+--Plug 'folke/which-key.nvim' -- Vim command helper
 -- Search
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lua/plenary.nvim' -- Dependency of Telescope
-Plug 'nvim-treesitter/nvim-treesitter' -- Dependency of Telescope (for Parsers)
+Plug 'nvim-treesitter/nvim-treesitter' -- Dependency of Telescope (for Parsers) (Syntax support multiple languages)
+Plug 'junegunn/fzf' -- Alternative grep to Telescope
+Plug 'junegunn/fzf.vim'
 -- Icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'kyazdani42/nvim-web-devicons'
@@ -25,25 +29,23 @@ Plug 'marko-cerovac/material.nvim'
 --Plug 'tjdevries/colorbuddy.nvim' -- To create your OWN colorscheme!
 -- Terminal
 Plug ('akinsho/toggleterm.nvim', { tag = 'v1.*' })
+Plug 'NvChad/nvterm'
 -- Transparent
 --Plug 'xiyaowong/nvim-transparent'
+-- Live Server
+--Plug 'turbio/bracey.vim'
 
 ----- Syntax support
 -- HTML/CSS
 Plug 'mattn/emmet-vim' -- Tags snippets
-Plug 'norcalli/nvim-colorizer.lua' -- Show colors for CSS, HTML and JS
--- JavaScript
-Plug 'pangloss/vim-javascript'
--- Multiple languages
-Plug 'sheerun/vim-polyglot'
+Plug 'norcalli/nvim-colorizer.lua' -- Show colors for CSS, HTML and JS -- Sutitute by Treesitter
 -- Indent lines
-Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim'
 -- Auto brackets
---Plug 'jiangmiao/auto-pairs'
-Plug 'windwp/nvim-autopairs' -- Recomended por Neovim
+Plug 'windwp/nvim-autopairs'
 Plug 'alvan/vim-closetag'
--- Lua
-Plug 'tbastos/vim-lua'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat' -- Repeat plug commands with '.'
 
 ----- Git
 Plug 'tpope/vim-fugitive' -- Commands snippets
@@ -72,7 +74,8 @@ Plug 'lifepillar/pgsql.vim'
 Plug 'nanotee/sqls.nvim'
 -- Snippets
 Plug 'L3MON4D3/LuaSnip'
-Plug 'nvim-treesitter/nvim-treesitter' -- Optional from cmp-nvim-ultisnips,  requires Neovim nightly. (do :TSUpdate)
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'rafamadriz/friendly-snippets' -- Add snippets in a lot of languages.
 -- React
 Plug 'mlaursen/vim-react-snippets'
 -- Installer
@@ -98,3 +101,7 @@ require("nvim_toggleterm")
 require("nvim_treesitter")
 require("nvim_lsp_installer")
 require("nvim_autopairs")
+require("nvim_indent_blankline")
+require("nvim_bufferline")
+
+require("nvterm").setup{}

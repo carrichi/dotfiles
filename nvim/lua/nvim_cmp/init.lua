@@ -3,6 +3,10 @@
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 require('cmp_git').setup{}
+
+--- Add snippets for other languages.
+require('luasnip.loaders.from_vscode').lazy_load()
+
 cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
@@ -19,10 +23,10 @@ cmp.setup({
     ['<C-d>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     --['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm { 
+    ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    }, 
+    },
     ['<Tab>'] = cmp.mapping(
       function(fallback)
         if cmp.visible() then
@@ -32,7 +36,7 @@ cmp.setup({
         else
           fallback()
         end
-      end, 
+      end,
       { 'i', 's' }
     ),
     ['<S-Tab>'] = cmp.mapping(
@@ -44,7 +48,7 @@ cmp.setup({
         else
           fallback()
         end
-      end, 
+      end,
       { 'i', 's' }
     ),
     }),
@@ -52,9 +56,10 @@ cmp.setup({
       {
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
+	{ name = 'friendly-snippets' }
       },
-    { 
-      { name = 'buffer' } 
+    {
+      { name = 'buffer' }
     }
   )
 })
@@ -63,9 +68,9 @@ cmp.setup({
 cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources(
     {
-      --{ name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+      { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
       { name = 'git' }, -- You can specify the `cmp_git` source if you were installed it.
-    }, 
+    },
     { { name = 'buffer' } }
   )
 })
@@ -82,15 +87,8 @@ cmp.setup.cmdline('/', {
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources(
-    { { name = 'path' } }, 
+    { { name = 'path' } },
     { { name = 'cmdline' } }
   )
 })
-
--- Setup lspconfig.
---Enable (broadcasting) snippet capability for completion
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-local capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 

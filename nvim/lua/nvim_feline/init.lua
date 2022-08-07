@@ -7,7 +7,8 @@ local colors = {
     fg = '#abb2bf',
     yellow = '#e0af68',
     cyan = '#56b6c2',
-    darkblue = '#081633',
+    --darkblue = '#081633',
+    darkblue = '#354259',
     green = '#98c379',
     orange = '#d19a66',
     violet = '#a9a1e1',
@@ -145,7 +146,6 @@ local comps = {
     },
     diagnos = {
       err = {
-          -- provider = 'diagnostic_errors',
           provider = function()
               return '' .. lsp_get_diag("ERROR")
           end,

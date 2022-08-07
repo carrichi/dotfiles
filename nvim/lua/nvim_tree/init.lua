@@ -16,10 +16,14 @@ require('nvim-tree').setup({
         { key = "n", action = 'create' },
         { key = "?", action = 'toggle_help' },
       }
-    }
+    },
+    side = 'left',
+    relativenumber = true,
   },
   renderer = {
-    group_empty = true
+    group_empty = true,
+    highlight_git = true,
+    highlight_opened_files = 'icon',
   },
   filters = {
     dotfiles = true
@@ -28,5 +32,16 @@ require('nvim-tree').setup({
     open_file = {
       quit_on_open = true,
     }
+  },
+  diagnostics = {
+    enable = true
+  },
+  log = {
+    enable = true,
+    truncate = true,
+    types = {
+      git = true,
+      profile = true,
+    },
   }
 })
