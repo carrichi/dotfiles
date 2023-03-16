@@ -37,7 +37,7 @@ require('nvim-tree').setup({
     enable = true
   },
   log = {
-    enable = true,
+    enable = false,
     truncate = true,
     types = {
       git = true,

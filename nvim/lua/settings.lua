@@ -1,33 +1,31 @@
 -----------------------------------
 -- Configuracion del EDITOR
 -----------------------------------
-local cmd = vim.cmd
+--local cmd = vim.cmd
 local api = vim.api
 local autostart = api.nvim_create_augroup("AutoStart", { clear = true })
 local g = vim.g -- :global
-local opt = vim.opt -- :set (For global vim option and local buffer options, global and local)
+local set = vim.opt -- :set (For global vim option and local buffer options, global and local)
 
 ----- Default options
-opt.number = true
-opt.mouse = 'a'
-opt.numberwidth = 3 opt.showcmd = true -- Nvim (por defecto)
-opt.encoding = 'utf-8' -- Nvim (por defecto)
-opt.ruler = true -- Que hace ruler?
-opt.cursorline = true
-opt.relativenumber = true
+set.number = true
+set.mouse = 'a'
+set.numberwidth = 3
+set.showcmd = true -- Nvim (por defecto)
+set.encoding = 'utf-8' -- Nvim (por defecto)
+set.ruler = true -- Que hace ruler?
+set.cursorline = true
+set.relativenumber = true
 api.nvim_create_autocmd({"BufNew", "BufRead"}, { command = "set noshowmode", group = autostart })
-opt.clipboard = 'unnamedplus'
-opt.lazyredraw = true -- Para no reescribir todo el archivo al guardar ??
-
------ Split window
---cmd[[set nosplitright]]
+set.clipboard = 'unnamedplus'
+set.lazyredraw = true -- Para no reescribir todo el archivo al guardar ??
 
 ----- Theme
-opt.termguicolors = true
+set.termguicolors = true
 
 ----- Transparencia
 --TODO: Transparencia?
-cmd[[hi Normal guibg=NONE ctermbg=NONE]]
+--vim.cmd[[hi Normal guibg=NONE ctermbg=NONE]]
 
 ----- Syntax
 -- Events :h events
@@ -39,30 +37,34 @@ api.nvim_create_autocmd({"BufNew", "BufRead"}, { command = "filetype plugin on",
 api.nvim_create_autocmd("FileType", {pattern = "*.asm",  command = "set ft=masm", group = autostart })
 
 ----- Identation
-opt.cindent = true
-opt.autoindent = true
-opt.shiftwidth = 2
-opt.tabstop = 2
+set.cindent = true
+set.autoindent = true
+-- Set tabs with spaces
+set.tabstop = 4
+set.softtabstop = 0
+set.expandtab = true
+set.shiftwidth = 2
+set.smarttab = true
 
 ----- Searching
-opt.hlsearch = true -- Hightlight matches
-opt.incsearch = true -- Incremental searching
-opt.ignorecase = true -- Searches are case insensitive
-opt.smartcase = true -- Unless they contain at least one capital letter
+set.hlsearch = true -- Hightlight matches
+set.incsearch = true -- Incremental searching
+set.ignorecase = true -- Searches are case insensitive
+set.smartcase = true -- Unless they contain at least one capital letter
 
 ----- DBUI
 g.dbs = { mtldb = 'postgres =//localhost/mtldb' }
 
 ----- COC?
 -- Text Edit might fail if hidden is not set
-opt.hidden = true -- For buffers?
+set.hidden = true -- For buffers?
 -- Some servers have issues with backup files, se #649
 api.nvim_create_autocmd({"BufNew", "BufRead"}, {command = "set nobackup", group = autostart })
 api.nvim_create_autocmd({"BufNew", "BufRead"}, {command = "set nowritebackup", group = autostart })
 -- Having longer updatetime (default is 4000 ms = 4s) leads to noticeable, delays and poor user experience.
-opt.updatetime = 300
+set.updatetime = 300
 -- Better display for messages
-opt.cmdheight = 1 -- Nvim (por defecto)
+set.cmdheight = 1 -- Nvim (por defecto)
 -- Don't pass messages to |ins-completion-menu|.
 api.nvim_create_autocmd({"BufNew", "BufRead"}, {command = "set shortmess +=c", group = autostart })
 

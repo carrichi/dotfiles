@@ -57,7 +57,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Si un pedazo de la ventana esta bloqueda solo se generaran nuevas pestanias.
     #     , desc="Toggle between split and unsplit sides of stack"),
     ([mod, "shift"], "Return", lazy.layout.toggle_split()),
-    
+ 
     # Intercambiar entre los diferentes tipos de plantillas "Maximizada", "Por columnas", etc.
     ([mod], "Tab", lazy.next_layout()),
 
@@ -72,7 +72,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Comando para ejecutar un unico comando.
     ([mod], "r", lazy.spawncmd()),
-    
+
     # Cambiar de monitores
     ([mod], "period", lazy.prev_screen()),
 
@@ -88,10 +88,10 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Mostrar las aplicaciones activas.
     ([mod, "shift"], "m", lazy.spawn("rofi -show")),
-    
+
     # Abrir navegador.
-    ([mod], "u", lazy.spawn("firefox")),
-    ([mod, "shift"], "u", lazy.spawn("brave")),
+    ([mod], "u", lazy.spawn("google-chrome-stable")),
+    ([mod, "shift"], "u", lazy.spawn("firefox")),
 
     # Abrir explorador de archivos.
     ([mod], "y", lazy.spawn("thunar")),
@@ -128,7 +128,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod, "control"], "i", lazy.spawn("brightnessctl set 5%-")),
 
     # Distribuciones de teclado
-    ([mod1], "space", lazy.widget["keyboardlayout"].next_keyboard()),
+    ([mod], "space", lazy.widget["keyboardlayout"].next_keyboard()),
 
     # Suspender computadora.
     ([mod, "control"], "x", lazy.spawn("systemctl suspend")),

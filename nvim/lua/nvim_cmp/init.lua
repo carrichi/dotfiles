@@ -56,7 +56,7 @@ cmp.setup({
       {
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
-	{ name = 'friendly-snippets' }
+				{ name = 'friendly-snippets' }
       },
     {
       { name = 'buffer' }
